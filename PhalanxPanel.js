@@ -28,39 +28,46 @@
     let phalanxList = {};
     let allianceMap = new Map(); // Initialize as a Map here
 
-    // Konfiguration für Allianzfarben und Warnungs-Präfixe
+    // Konfiguration für Allianzfarben und Präfixe
     const allianceConfig = {
         'SPACE INVADERS': {
             color: '#FF4500',
-            warningPrefix: '',
+            prefix: '',
             isHostile: true
         },
         'FormidableFernichter': {
             color: '#e7793d',
-            warningPrefix: '',
+            prefix: '',
             isHostile: false
         },
         'Sinnlos im Weltraum': {
             color: '#9932CC',
-            warningPrefix: '',
+            prefix: 'Neutral',
             isHostile: false
         },
         'Hailiger Graal': {
             color: '#32CD32',
-            warningPrefix: '',
+            prefix: '😎',
             isHostile: false
         },
         'Space Schmuser': {
             color: '#25e184',
-            warningPrefix: '',
+            prefix: '😼',
             isHostile: false
         },
         // Weitere Allianzen hier hinzufügen
         'default': {
             color: '#FFFFFF',
-            warningPrefix: '',
+            prefix: '',
             isHostile: false
         }
+    };
+
+    // Konfiguration für Spieler-spezifische Präfixe
+    const playerConfig = {
+        'Blubb477': 'Heulsuse',
+        'Kanzlerkandidat': 'komischer Typ',
+
     };
 
     // Initialisierung
@@ -403,6 +410,7 @@
     // Eintrag hinzufügen
     function addEntry(alliance, player, phalanxLevel, coordinates, inRange = false, rangeInfo = null) {
         const entriesContainer = document.getElementById('galaxyInfoEntries');
+        console.log(player);
 
         // Neuen Eintrag erstellen
         const entry = document.createElement('div');
@@ -410,8 +418,11 @@
         // Allianz-Konfiguration abrufen
         const allianceConf = allianceConfig[alliance] || allianceConfig.default;
         const color = allianceConf.color;
-        const prefix = allianceConf.warningPrefix;
+        const alliancePrefix = allianceConf.prefix;
         const isHostile = allianceConf.isHostile;
+
+        // Spieler-Konfiguration abrufen
+        const playerPrefix = playerConfig[player] || '';
 
         // Hintergrundfarbe je nach Feindlichkeit und In-Range-Status anpassen
         let bgColor = isHostile ? 'rgba(80, 30, 30, 0.6)' : 'rgba(50, 50, 50, 0.5)';
@@ -430,21 +441,21 @@
             font-size: 13px;
         `;
 
-        // Text für den Eintrag formatieren mit Präfix wenn vorhanden
-        const prefixText = prefix ? `<strong style="color: #FF6666">${prefix} </strong>` : '';
+        // Text für den Eintrag formatieren mit Präfixen wenn vorhanden
+        const alliancePrefixText = alliancePrefix ? `<strong>${alliancePrefix}</strong> ` : '';
+        const playerPrefixText = playerPrefix ? ` - <strong>${playerPrefix}</strong>` : '';
 
         // Range-Information hinzufügen, wenn vorhanden
         let rangeText = '';
         if (rangeInfo) {
             rangeText = `<div style="margin-top: 3px; ${inRange ? 'color: #FF9900; font-weight: bold;' : ''}">
                 Reichweite: von ${rangeInfo.lowerEnd} bis ${rangeInfo.upperEnd} Systeme
-                ${inRange ? ' - <span style="color: #FF3333">Du bist in Reichweite!</span>' : ''}
             </div>`;
         }
 
         entry.innerHTML = `
-            ${prefixText}<strong>Allianz: ${alliance}</strong><br>
-            Spieler: ${player}<br>
+            ${alliancePrefixText}<strong>Allianz: ${alliance}</strong><br>
+            Spieler: ${player}${playerPrefixText}<br>
             Phalanx Lvl ${phalanxLevel}<br>
             Koordinaten: ${coordinates}
             ${rangeText}
