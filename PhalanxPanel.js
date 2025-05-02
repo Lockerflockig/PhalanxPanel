@@ -90,12 +90,10 @@
 
             // Allianzdaten laden
             allianceMap = await getAlliances();
-            console.log('Alliance map loaded:', allianceMap);
 
             // Monddaten laden
             const moonData = await getFilteredMoonData();
             phalanxList = moonData;
-            console.log('Gefundene Monde mit Phalanx:', moonData);
 
             // Panel mit den gefundenen Daten aktualisieren
             updatePhalanxDisplay();
@@ -240,7 +238,6 @@
 
                         const spyReport = moon.expand.moon_buildings;
                         const player = spyReport.expand?.player;
-                        console.log(allianceMap);
 
                         if (!player) {
                             console.warn('Keine Spielerinformationen für Mond:', moon);
@@ -276,7 +273,6 @@
                     return result;
                 }, []);
 
-                console.log(`${filteredList.length} Monde mit Phalanx > Level 1 gefunden.`);
                 return filteredList;
 
             } catch (apiError) {
@@ -410,7 +406,6 @@
     // Eintrag hinzufügen
     function addEntry(alliance, player, phalanxLevel, coordinates, inRange = false, rangeInfo = null) {
         const entriesContainer = document.getElementById('galaxyInfoEntries');
-        console.log(player);
 
         // Neuen Eintrag erstellen
         const entry = document.createElement('div');
@@ -475,7 +470,6 @@
     // Aktualisiert die Anzeige basierend auf dem aktuellen System
     function updatePhalanxDisplay() {
         currentSys = getCurrentSystem();
-        console.log("Aktuelles System:", currentSys);
 
         clearEntries();
         const entriesContainer = document.getElementById('galaxyInfoEntries');
